@@ -23,7 +23,7 @@ def show_author(request: Request, current_user: UserModel = Depends(tokens.verif
 
     return all_authors
 
-@router.post('/create_author', response_model=AuthorModel)
+@router.post('/', response_model=AuthorModel)
 def create_author(request: Request, fetch_requests: AuthorModel, current_user: UserModel = Depends(tokens.verify_token)):
 
     logged_user_info: UserModel = request.state.user_info

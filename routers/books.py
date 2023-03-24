@@ -24,7 +24,7 @@ def add_book(request: Request, requests: BookModel, current_user: UserModel = De
     if logged_user_info['access_type'] == "ADMIN":
         check_book = books_collection.find_one({"book_code": requests.book_code})
         if check_book:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This email address already exists")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This book already exists")
         else:
             add_book = books_collection.insert_one(new_book)
     else:
@@ -33,14 +33,14 @@ def add_book(request: Request, requests: BookModel, current_user: UserModel = De
 
 
 @router.get('/{book_code}')
-def get_book(book_code: int):
+def get_book(book_code: str):
     get_book = books_collection.find_one({"book_code": book_code}, {'_id': 0,})
     # print(all_users)
     return get_book
 
 
-@router.put('/update/{book_code}')
-def update_book(book_code: int, request: BookModel):
+@router.put('/{book_code}')
+def update_book(book_code: str, request: BookModel):
     print(book_code)
     filter = {"book_code": book_code}
     newvalues = {"$set": {
@@ -52,8 +52,8 @@ def update_book(book_code: int, request: BookModel):
     
     return update_book
 
-@router.delete('/delete/{book_code}')
-def delete_book(request: Request, book_code: int, current_user: UserModel = Depends(tokens.verify_token)):
+@router.delete('/{book_code}')
+def delete_book(request: Request, book_code: str, current_user: UserModel = Depends(tokens.verify_token)):
 
     logged_user_info: UserModel = request.state.user_info
     

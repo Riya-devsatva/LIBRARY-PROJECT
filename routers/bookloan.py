@@ -13,7 +13,7 @@ def show_loan(email: str):
     print(show_loan)
     return show_loan
 
-@router.post('/create_loan', response_model=BookLoanModel)
+@router.post('/', response_model=BookLoanModel)
 def create_loan(request: Request, fetch_requests: BookLoanModel, current_user: UserModel = Depends(tokens.verify_token)):
 
     logged_user_info: UserModel = request.state.user_info
@@ -33,8 +33,8 @@ def create_loan(request: Request, fetch_requests: BookLoanModel, current_user: U
     return create_loan
 
 
-@router.put('/accept_reject/{book_code}')
-def accept_reject(book_code: int, request: Request, fetch_request: BookLoanModel, current_user: UserModel = Depends(tokens.verify_token) ):
+@router.put('/{book_code}')
+def accept_reject(book_code: str, request: Request, fetch_request: BookLoanModel, current_user: UserModel = Depends(tokens.verify_token) ):
 
     logged_user_info: UserModel = request.state.user_info
 

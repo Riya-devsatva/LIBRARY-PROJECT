@@ -11,12 +11,12 @@ class StatusEnumType(str, Enum):
 class BookModel(BaseModel):
     title: str = Field()
     author: str = Field()
-    book_code: int = Field()
+    book_code: str = Field()
     added_by: str = Field()
 
 class BookLoanModel(BaseModel):
     user: str = Field()
-    book_code: int = Field()
+    book_code: str = Field()
     loan_status: StatusEnumType = StatusEnumType.INREVIEW   
     accepted_rejected_by: str | None
 
