@@ -1,23 +1,20 @@
-from fastapi import APIRouter, HTTPException, status, Depends, Request
+from fastapi import APIRouter, Depends
 from models.usermodels import UserModel, add, show, update
-from helpers.database import user_collection, db
+from helpers import tokens
 
-
-# from helpers.oauth2 import get_current_user
-import helpers.tokens as tokens 
-
-
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(tokens.verify_token)])
 
 @router.post('', response_model= UserModel)
 def create_user(request: UserModel):
+    """Create a new user route"""
     return add(request)
 
-@router.get('/')
-def show_user(request: Request, current_user: UserModel = Depends(tokens.verify_token)):
-    return show(request)
+@router.get('')
+def show_user():
+    """Show a user route"""
+    return show()
 
 @router.put('/{email}')
 def update_user(email: str, request: UserModel):
-   return update(email, request) 
-
+    """ Update a user route """
+    return update(email, request)
